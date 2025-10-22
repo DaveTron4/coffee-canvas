@@ -4,7 +4,7 @@ Submitted by: **David Salas C.**
 
 About this web app: **Coffee Canvas is a full-stack coffee recipe customization platform that allows users to create, save, and manage their perfect coffee drinks. Users can customize multiple aspects of their coffee including caffeine type, drink style, roast preferences, milk options, espresso shots, syrups, and toppings. The app features dynamic pricing that updates in real-time as options are selected, intelligent form validation that prevents incompatible combinations (like selecting roast types for espresso-based drinks), and a visually responsive interface that transforms between hot and iced themes. Built with React, Express, and PostgreSQL, Coffee Canvas provides a complete CRUD experience where users can view all their saved recipes, edit existing drinks, and delete unwanted ones from both list and detail views.**
 
-Time spent: **10** hours
+Time spent: **11** hours
 
 ## Required Features
 
@@ -40,7 +40,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented required features:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://i.imgur.com/iYl1t6j.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ScreenToGif
