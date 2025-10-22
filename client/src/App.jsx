@@ -1,41 +1,68 @@
 import React from 'react'
 import { useRoutes } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import Navigation from './components/Navigation'
-import ViewCars from './pages/ViewCars'
-import EditCar from './pages/EditCar'
-import CreateCar from './pages/CreateCar'
-import CarDetails from './pages/CarDetails'
+import ViewCoffee from './pages/ViewCoffee'
+import EditCoffee from './pages/EditCoffee'
+import CreateCoffee from './pages/CreateCoffee'
+import CoffeeDetails from './pages/CoffeeDetails'
+import CoffeeOptionsAPI from './services/CoffeeOptionsAPI'
 import './App.css'
 
 const App = () => {
-  let element = useRoutes([
-    {
-      path: '/',
-      element: <CreateCar title='BOLT BUCKET | Customize' />
-    },
-    {
-      path:'/customcars',
-      element: <ViewCars title='BOLT BUCKET | Custom Cars' />
-    },
-    {
-      path: '/customcars/:id',
-      element: <CarDetails title='BOLT BUCKET | View' />
-    },
-    {
-      path: '/edit/:id',
-      element: <EditCar title='BOLT BUCKET | Edit' />
-    }
-  ])
+  // State to hold coffee options fetched from API (categorized object)
+    const [coffeeOptions, setCoffeeOptions] = useState({
+        caffeineTypes: [],
+        drinkTypes: [],
+        roastTypes: [],
+        milkOptions: [],
+        shotNumbers: [],
+        shotModifiers: [],
+        syrupOptions: [],
+        toppingOptions: [],
+    });
 
-  return (
-    <div className='app'>
+    // Fetch coffee options on component mount
+    useEffect(() => {
 
-      <Navigation />
+        const fetchOptions = async () => {
+            // API call to get categorized coffee options
+            const json = await CoffeeOptionsAPI.getAllCoffeeOptions();
+            setCoffeeOptions(json);
+        }
 
-      { element }
+        fetchOptions();
 
-    </div>
-  )
+    }, []);
+
+    let element = useRoutes([
+      {
+        path: '/',
+        element: <CreateCoffee title='BOLT BUCKET | Customize' coffeeOptions={coffeeOptions} />
+      },
+      {
+        path:'/coffees',
+        element: <ViewCoffee title='BOLT BUCKET | Custom Coffees' coffeeOptions={coffeeOptions} />
+      },
+      {
+        path: '/coffees/:id',
+        element: <CoffeeDetails title='BOLT BUCKET | View' coffeeOptions={coffeeOptions} />
+      },
+      {
+        path: '/edit/:id',
+        element: <EditCoffee title='BOLT BUCKET | Edit' coffeeOptions={coffeeOptions} />
+      }
+    ])
+
+    return (
+      <div className='app'>
+
+        <Navigation />
+
+        { element }
+
+      </div>
+    )
 }
 
 export default App

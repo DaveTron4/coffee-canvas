@@ -13,6 +13,25 @@ const getAllUserRecipes = async (req, res) => {
     }
 };
 
+const getUserRecipeById = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const result = await pool.query(
+            'SELECT * FROM user_recipes WHERE id = $1',
+            [id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: `Recipe with id ${id} not found` });
+        }
+
+        res.status(200).json(result.rows[0]);
+    } catch (err) {
+        console.error('Error fetching user recipe:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 // Creates user recipe
 const createUserRecipe = async (req, res) => {
     try {
@@ -33,21 +52,20 @@ const createUserRecipe = async (req, res) => {
 
         const results = await pool.query(
             `
-            INSERT INTO gifts (
-            UPDATE user_recipes SET
-            recipe_name,
-            drink_size,
-            is_iced,
-            caffeine_type_id,
-            drink_type_id,
-            roast_type_id,
-            milk_option_id,
-            shot_number_id,
-            shot_modifier_id,
-            syrup_option_ids,
-            topping_option_ids,
-            total_price
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7) 
+            INSERT INTO user_recipes (
+                recipe_name,
+                drink_size,
+                is_iced,
+                caffeine_type_id,
+                drink_type_id,
+                roast_type_id,
+                milk_option_id,
+                shot_number_id,
+                shot_modifier_id,
+                syrup_option_ids,
+                topping_option_ids,
+                total_price
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) 
             RETURNING *
         `, [
                 recipe_name,
@@ -74,7 +92,7 @@ const createUserRecipe = async (req, res) => {
 // Update user recipe by ID
 const updateUserRecipe = async (req, res) => {
     try {
-        const { id } = parseInt(req.params.id);
+        const id = parseInt(req.params.id);
         const { recipe_name, drink_size, is_iced, caffeine_type_id, drink_type_id, roast_type_id, milk_option_id, shot_number_id, shot_modifier_id, syrup_option_ids, topping_option_ids, total_price } = req.body;
 
         const result = await pool.query(
@@ -93,6 +111,7 @@ const updateUserRecipe = async (req, res) => {
             topping_option_ids = $11,
             total_price = $12
             WHERE id = $13
+            RETURNING *
             `,
             [
                 recipe_name,
@@ -138,4 +157,4 @@ const deleteUserRecipe = async (req, res) => {
   }
 };
 
-export default { getAllUserRecipes, updateUserRecipe, createUserRecipe, deleteUserRecipe };
+export default { getAllUserRecipes, getUserRecipeById, updateUserRecipe, createUserRecipe, deleteUserRecipe };
